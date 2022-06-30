@@ -1,8 +1,35 @@
 //Inicializamos las variables
-let usuariosnombre=["Dario","Valentin","Luis","Magali","Fernanda","Agustin","Matias"];
-let usuariosapellido=["Orduña","Zibana","Gonzalez","Salinas"];
-let compnombre=0;
-let compapellido=0;
+let usuarios= [
+    {nombre: "Dario",
+    apellido:"Orduña",
+    edad: 52,
+    salario:100000}
+,
+    {nombre: "Valentin",
+    apellido:"Orduña",
+    edad: 20,
+    salario:20000}
+,
+    {nombre: "Magali",
+    apellido:"Zibana",
+    edad: 19,
+    salario:20000}
+,
+    {nombre: "Agustin",
+    apellido:"Orduña",
+    edad: 24,
+    salario:50000}
+,
+    {nombre: "Matias",
+    apellido:"Orduña",
+    edad: 31,
+    salario:100000}
+,
+    {nombre: "Fernanda",
+    apellido:"Gonzalez",
+    edad: 51,
+    salario:100000}
+];
 let nombre;
 let apellido;
 let siguiente;
@@ -11,8 +38,8 @@ let salario=0;
 let agregarsalario=0;
 let gasto=0;
 let gastoin=0;
-let gastos = [0];
-let gastosinnecesarios = [0];
+let gastos = [];
+let gastosinnecesarios = [];
 
 //Creamos Constructor
 class Persona {
@@ -24,7 +51,7 @@ class Persona {
     }
     identificaredad (){
         if (this.edad <=22){
-            alert("Te felicitamos que a pesar de tu edad quieras manejar mejor tu economia");
+            alert("Te felicitamos que a pesar de tu edad quieras manejar mejor tu economia!");
         }else {
             alert("Muy buena decision ya estas preparado para CALCULAR TUS GASTOS DE LA MEJOR MANERA!");
         }
@@ -32,7 +59,6 @@ class Persona {
 }
 
 //Presentacion de la aplicacion
-
 
 function Prensentacion (){
     alert("BIEVENIDO A LA MEJOR CALCULADORA DE GASTOS! CALCULA TUS GASTOS DE LA MANERA MAS EFICIENTE Y SIN INVERTIR NADA DE TIEMPO. TODO LO HACEMOS POR VOS!");
@@ -47,9 +73,9 @@ function PedirDatos(){
     apellido = prompt("Ingrese tu Apellido");
     ValidarDatos(apellido);
     edad = parseInt (prompt("Ingrese tu Edad"));
-    ValidarDatos(edad);
+    ValidarNumeros(edad);
     salario = parseInt (prompt("Ingrese tu Salario Mensual"));
-    ValidarDatos(salario);
+    ValidarNumeros(salario);
     const persona1= new Persona (nombre, apellido, edad, salario);
     MostrarDatos(persona1);
 }
@@ -57,26 +83,49 @@ function PedirDatos(){
 //Validamos datos
 
 function ValidarDatos (validar) {
-    while (validar===" " || validar==="") {
-        switch (validar){
-            case nombre:
-                alert("El nombre ingresado no es correcto,ingrese uno nuevamente");
+    switch(validar) {
+        case  nombre:
+            while(nombre===""||nombre===" "|| Number(nombre)) {
+                alert("El nombre ingresado no es correcto, intentalo nuevamente");
                 nombre= prompt("Ingrese tu Nombre");
-                break;
-            case apellido:
-                alert("El apellido ingresado no es correcto,ingrese uno nuevamente");
+            }
+            break;
+
+        case  apellido:
+            while(apellido===""||apellido===" "|| Number(apellido)) {
+                alert("El apellido ingresado no es correcto, intentalo nuevamente");
                 apellido = prompt("Ingrese tu Apellido");
-                break;
+            }
+            break;
+
+        case  edad:
+            while(edad===""||edad===" "|| isNaN(apellido)||edad<=0) {
+                alert("La edad ingresada no es correcta, intentalo nuevamente");
+                edad = parseInt (prompt("Ingrese tu Edad"));
+            }
+
+            break;
+
+        case  salario:
+            while(salario===""||salario===" "|| isNaN(salario)||salario<=0) {
+                alert("El salario ingresado no es correcto, intentalo nuevamente");
+                salario = parseInt (prompt("Ingrese tu Salario Mensual"));
+            }
+            break;
+            
+    }
+}
+
+function ValidarNumeros(validar) {
+    while (isNaN(validar) || validar<=0 || validar===" " || validar==="") {
+        switch(validar) {
             case edad:
                 alert("La edad ingresada no es correcta,ingrese una nuevamente");
-                edad = parseInt (prompt("Ingrese tu Edad"));
+                PedirDatos();
                 break;
             case salario:
                 alert("El salario ingresado no es correcto,ingrese uno nuevamente");
-                salario = parseInt (prompt("Ingrese tu Salario Mensual"));
-                break;
-            default:
-
+                PedirDatos();
                 break;
         }
     }
@@ -98,30 +147,19 @@ function MostrarDatos (Verificar) {
 }
 
 //Comprabamos si el usuario esta en el array
-
 function ComprobarUsuario (){;
-    const mostrar= new Persona (nombre, apellido, edad, salario);
-    compnombre=usuariosnombre.indexOf(nombre);
-    compapellido= usuariosapellido.indexOf(apellido);
-    if (compnombre>=0 && compapellido>=0) {
-        alert("El usuario que ingresaste ya esta creado,intenlo nuevamente");
-        PedirDatos();
-    }else {
-        alert("Felicitaciones!! te has registrado exitosamente!!");
-        mostrar.identificaredad();
-        AgregarUsuario();
+    let persona=new Persona(nombre,apellido,edad,salario);
+    for (const propiedad of usuarios) {
+        if(persona.nombre===propiedad.nombre){
+            if(persona.apellido===propiedad.apellido) {
+                alert("El usuario ingresado ya esta registrado, intente con uno nuevamente");
+                PedirDatos();
+            }
+        }
     }
-}
-
-//Agregamos usuario al array si es que no esta
-
-function AgregarUsuario(){
-    if (compnombre===-1){
-        usuariosnombre.push(nombre);
-    }
-    if (compapellido===-1) {
-        usuariosapellido.push(apellido);
-    }
+    alert("Te has registrado con exito");
+    persona.identificaredad();
+    usuarios.push(persona);
     Menu();
 }
 
@@ -129,7 +167,7 @@ function AgregarUsuario(){
 
 function Menu () {
     const persona= new Persona (nombre, apellido, edad, salario);
-    let opcion= parseInt(prompt("INTRODUCE QUE QUIERES HACER:\n 1) Agregar Gasto \n 2) Agregar Dinero \n 3) Ver Salario \n 4) Salir "));
+    let opcion= parseInt(prompt("INTRODUCE QUE QUIERES HACER:\n 1) Agregar Gasto \n 2) Agregar Dinero \n 3) Ver Salario \n 4) Ver Estadisticas \n 5) Salir "));
     switch (opcion) {
         case 1:
             GastosDelDia();           
@@ -138,25 +176,56 @@ function Menu () {
             AgregarSalario();
             break;
         case 3:
-            alert("Tu salario es : $ "+persona.salario);
+            alert("Tu salario es restante : $ "+persona.salario);
             Menu();
 
             break;
         case 4:
+            MostrarEstadisticas();
+
+            break;
+        
+        case 5:
             alert("Muchas gracias por usar nuestra Calculadora, TE ESPERAMOS!");
             break;
     }
+    if(isNaN(opcion)|| opcion===" " || opcion>5){
+        alert("No ingresaste ninguna opcion,asegurate de poner alguna de las opciones que ofrecemos");
+        Menu();
+    }
+    
 }
 
-//Oedimos dato de gastos
+//Pedimos dato de gastos
 
 function GastosDelDia (){
     ComprobarSalario();
     gasto = parseInt(prompt("Ingresa los gastos vitales (Luz, Gas, Comida, Bebida, Nafta) del dia"));
+    ValidarGastos(gasto);
     gastoin = parseInt(prompt("Ingresa los gastos innecesarios (Salida a comer, Tu chocolate favorito, Compra de Videojuego) del dia"));
+    ValidarGastos(gastoin);
     gastos.push(gasto);
     gastosinnecesarios.push(gastoin);
     SumandoGastos(gasto,gastoin);
+}
+
+//Validamos Gastos
+function ValidarGastos(validar){
+    switch (validar) {
+        case gasto:
+            while(gasto<0||isNaN(gasto)||gasto===" "||gasto===""){
+                alert("El gasto ingresado no es correcto,vuelve a ingresarlo nuevamente");
+                gasto = parseInt(prompt("Ingresa los gastos vitales (Luz, Gas, Comida, Bebida, Nafta) del dia"));
+            } 
+            break;
+        case gastoin:
+            if(gastoin<0||isNaN(gastoin)||gastoin===" "||gastoin===""){
+                alert("El gasto ingresado no es correcto,vuelve a ingresarlo nuevamente");
+                gastoin = parseInt(prompt("Ingresa los gastos innecesarios (Salida a comer, Tu chocolate favorito, Compra de Videojuego) del dia"));
+            } 
+            break;
+
+    }
 }
 
 //Sumamos los gastos y se lo restamos a salario
@@ -184,4 +253,15 @@ function AgregarSalario() {
     Menu();
 }
 
+//Mostramos Estadisticas
+function MostrarEstadisticas () {
+    let unirarray= gastos.concat(gastosinnecesarios);
+    let total= unirarray.reduce((acumulador,elemento)=>acumulador+elemento,0);
+    let totalgastos= gastos.reduce((acumulador,elemento)=>acumulador+elemento,0);
+    let totalgastosin= gastosinnecesarios.reduce((acumulador,elemento)=>acumulador+elemento,0);
+    alert("Tuviste un total de gastos de $ "+total+"\nUn total de gastos vitales de $ "+totalgastos+"\nUn total de gastos innecesarios de $ "+totalgastosin);
+    
+}
+
 Prensentacion();
+
